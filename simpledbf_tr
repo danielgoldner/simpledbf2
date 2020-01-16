@@ -632,10 +632,13 @@ class Dbf5(DbfBase):
                                   int(value[6:8])
                         if name not in self._dtypes:
                             self._dtypes[name] = "date"
+                            value = datetime.date(y, m, d)  # ADDED
+                        value = str(
+                            (value.strftime('%m/').replace('0', ' ') if value.strftime('%m')[0] == '0' else value.strftime('%m/')) +
+                            (value.strftime('%d/').replace('0', ' ') if value.strftime('%d')[0] == '0' else value.strftime('%d/')) +
+                            value.strftime('%Y'))  # ADDED
                     except:
-                        value = self._na
-                    else:
-                        value = datetime.date(y, m, d)
+                        value = ' 0/ 0/0000'  # ADDED
 
                 # Booleans can have multiple entry values
                 elif typ == 'L':
